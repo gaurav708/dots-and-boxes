@@ -30,6 +30,8 @@ public class Board {
                 array[i][j]=val;
     }
 
+    public int getSize() { return n; }
+
     public int getRedScore() {
         return redScore;
     }
@@ -48,6 +50,19 @@ public class Board {
 
     public int getBox(int x, int y) {
         return box[x][y];
+    }
+
+    public ArrayList<Edge> getAvailableMoves() {
+        ArrayList<Edge> ret = new ArrayList<Edge>();
+        for(int i=0; i<(n-1);i++)
+            for(int j=0; j<n; j++)
+                if(hEdge[i][j] == BLANK)
+                    ret.add(new Edge(i,j,true));
+        for(int i=0; i<n; i++)
+            for(int j=0; j<(n-1); j++)
+                if(vEdge[i][j] == BLANK)
+                    ret.add(new Edge(i,j,false));
+        return ret;
     }
 
     public ArrayList<Point> setHEdge(int x, int y, int color) {

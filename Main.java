@@ -9,19 +9,19 @@ public class Main {
 
     private final static int size = 8;
     private final static int dist = 40;
+
     private int n;
     private Board board;
     private int boardWidth;
+    private int turn;
+
     private JLabel[][] hEdge, vEdge, box;
     private boolean[][] isSetHEdge, isSetVEdge;
-    private MouseListener listener;
-    private int turn;
-    private boolean horizontal;
+
     private JFrame frame;
     private JPanel grid;
-    private JLabel redScoreLabel;
-    private JLabel blueScoreLabel;
-    private JLabel resultLabel;
+    private JLabel redScoreLabel, blueScoreLabel, resultLabel;
+    private MouseListener listener;
 
     Main(int n) {
         this.n = n;
@@ -36,10 +36,10 @@ public class Main {
         listener = new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent mouseEvent) {
-                Point location = getSource(mouseEvent.getSource());
-                int x=location.x, y=location.y;
+                Edge location = getSource(mouseEvent.getSource());
+                int x=location.getX(), y=location.getY();
                 ArrayList<Point> ret;
-                if(horizontal) {
+                if(location.isHorizontal()) {
                     if(isSetHEdge[x][y]) return;
                     ret = board.setHEdge(x,y,turn);
                     hEdge[x][y].setBackground(Color.BLACK);
@@ -88,9 +88,9 @@ public class Main {
 
             @Override
             public void mouseEntered(MouseEvent mouseEvent) {
-                Point location = getSource(mouseEvent.getSource());
-                int x=location.x, y=location.y;
-                if(horizontal) {
+                Edge location = getSource(mouseEvent.getSource());
+                int x=location.getX(), y=location.getY();
+                if(location.isHorizontal()) {
                     if(isSetHEdge[x][y]) return;
                     hEdge[x][y].setBackground((turn == board.RED) ? Color.RED : Color.BLUE);
                 }
@@ -102,9 +102,9 @@ public class Main {
 
             @Override
             public void mouseExited(MouseEvent mouseEvent) {
-                Point location = getSource(mouseEvent.getSource());
-                int x=location.x, y=location.y;
-                if(horizontal) {
+                Edge location = getSource(mouseEvent.getSource());
+                int x=location.getX(), y=location.getY();
+                if(location.isHorizontal()) {
                     if(isSetHEdge[x][y]) return;
                     hEdge[x][y].setBackground(Color.WHITE);
                 }
@@ -117,20 +117,16 @@ public class Main {
         initGame();
     }
 
-    private Point getSource(Object object) {
+    private Edge getSource(Object object) {
         for(int i=0; i<(n-1); i++)
             for(int j=0; j<n; j++)
-                if(hEdge[i][j] == object) {
-                    horizontal = true;
-                    return new Point(i,j);
-                }
+                if(hEdge[i][j] == object)
+                    return new Edge(i,j,true);
         for(int i=0; i<n; i++)
             for(int j=0; j<(n-1); j++)
-                if(vEdge[i][j] == object) {
-                    horizontal = false;
-                    return new Point(i,j);
-                }
-        return new Point(-1,-1);
+                if(vEdge[i][j] == object)
+                    return new Edge(i,j,false);
+        return new Edge();
     }
 
     private JLabel getHorizontalEdge() {
