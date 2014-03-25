@@ -109,8 +109,8 @@ public class Board {
     }
 
     public int getWinner() {
-        if(redScore > blueScore) return Board.RED;
-        else if(redScore < blueScore) return Board.BLUE;
-        else return Board.BLANK;
+        if(redScore > blueScore) return RED;
+        else if(redScore < blueScore) return BLUE;
+        else return BLANK;
     }
 }
