@@ -99,25 +99,31 @@ public class GamePlay {
         if(board.isComplete()) {
             int winner = board.getWinner();
             if(winner == Board.RED) {
-                statusLabel.setText("Red is the winner!");
+                statusLabel.setText("Player-1 is the winner!");
                 statusLabel.setForeground(Color.RED);
             }
             else if(winner == Board.BLUE) {
-                statusLabel.setText("Blue is the winner!");
+                statusLabel.setText("Player-2 is the winner!");
                 statusLabel.setForeground(Color.BLUE);
             }
-            else
+            else {
                 statusLabel.setText("Game Tied!");
+                statusLabel.setForeground(Color.BLACK);
+            }
         }
 
         if(ret.isEmpty()) {
             if(turn == Board.RED) {
                 turn = Board.BLUE;
                 solver = blueSolver;
+                statusLabel.setText("Player-2's Turn...");
+                statusLabel.setForeground(Color.BLUE);
             }
             else {
                 turn = Board.RED;
                 solver = redSolver;
+                statusLabel.setText("Player-1's Turn...");
+                statusLabel.setForeground(Color.RED);
             }
         }
 
@@ -289,7 +295,8 @@ public class GamePlay {
         ++constraints.gridy;
         grid.add(getEmptyLabel(new Dimension(2 * boardWidth, 10)), constraints);
 
-        statusLabel = new JLabel("Game is on!", SwingConstants.CENTER);
+        statusLabel = new JLabel("Player-1's Turn...", SwingConstants.CENTER);
+        statusLabel.setForeground(Color.RED);
         statusLabel.setPreferredSize(new Dimension(2 * boardWidth, dist));
         ++constraints.gridy;
         grid.add(statusLabel, constraints);

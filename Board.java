@@ -102,10 +102,7 @@ public class Board {
     }
 
     public boolean isComplete() {
-        if((redScore + blueScore) == (n-1)*(n-1))
-            return true;
-        else
-            return false;
+        return (redScore + blueScore) == (n - 1) * (n - 1);
     }
 
     public int getWinner() {
