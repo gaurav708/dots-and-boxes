@@ -148,7 +148,6 @@ public class Main {
                 e.printStackTrace();
             }
         }
-        System.out.println(redSolver + " " + blueSolver);
         new GamePlay(this, frame, n, redSolver, blueSolver, redName, blueName);
     }
 
