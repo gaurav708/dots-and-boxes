@@ -25,7 +25,6 @@ public class GamePlay {
 
     private JFrame frame;
     private JLabel redScoreLabel, blueScoreLabel, statusLabel;
-    private JButton goBackButton;
 
     private MouseListener mouseListener = new MouseListener() {
         @Override
@@ -298,7 +297,7 @@ public class GamePlay {
         ++constraints.gridy;
         grid.add(getEmptyLabel(new Dimension(2 * boardWidth, 10)), constraints);
 
-        goBackButton = new JButton("Go Back to Main Menu");
+        JButton goBackButton = new JButton("Go Back to Main Menu");
         goBackButton.setPreferredSize(new Dimension(boardWidth, dist));
         goBackButton.addActionListener(backListener);
         ++constraints.gridy;

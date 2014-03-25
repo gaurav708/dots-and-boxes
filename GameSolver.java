@@ -1,3 +1,3 @@
 public interface GameSolver {
-    public Edge getNextMove(Board board);
+    public Edge getNextMove(final Board board);
 }
