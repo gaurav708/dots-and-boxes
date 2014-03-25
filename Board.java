@@ -110,4 +110,18 @@ public class Board {
         else if(redScore < blueScore) return BLUE;
         else return BLANK;
     }
+
+    public Board getNewBoard(Edge edge, int color) {
+        Board ret = null;
+        try {
+            ret = (Board) this.clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+        if(edge.isHorizontal())
+            ret.setHEdge(edge.getX(), edge.getY(), color);
+        else
+            ret.setVEdge(edge.getX(), edge.getY(), color);
+        return ret;
+    }
 }

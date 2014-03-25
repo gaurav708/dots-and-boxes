@@ -137,7 +137,7 @@ public class GamePlay {
             }
             else {
                 mouseEnabled = false;
-                processMove(solver.getNextMove(board));
+                processMove(solver.getNextMove(board, turn));
             }
             try {
                 Thread.sleep(100);
