@@ -4,28 +4,23 @@ public class GreedySolver extends GameSolver {
 
     @Override
     public Edge getNextMove(final Board board, int color) {
-        
-        Edge trialEdge,nextEdge;
+        referenceColor = color;
         ArrayList<Edge> moves = board.getAvailableMoves();
-        int moveCount;
+        int moveCount = moves.size();
         int value[] = new int[moveCount];
         
-        Board tempBoard;
-        tempBoard = board;
-
-        for(int i=0;i<moveCount;i++){ 
-        	value[i] = heuristic(tempBoard.getNewBoard(moves[i],color),color);
+        for(int i=0;i<moveCount;i++) {
+            Board nextBoard = board.getNewBoard(moves.get(i), color);
+        	value[i] = heuristic(nextBoard, (nextBoard.getScore(color) > board.getScore(color) ? color : Board.toggleColor(color)));
+            System.out.println(moves.get(i) + " : " + value[i]);
         }
 
         int maxValueIndex=0;
-        for(int i=0;i<moveCount;i++){
+        for(int i=1;i<moveCount;i++){
         	if(value[i]>value[maxValueIndex])
         		maxValueIndex=i;
         }
-        nextEdge = moves[maxValueIndex];
-
-        return nextEdge;
-       
+        return moves.get(maxValueIndex);
     }
 
 }

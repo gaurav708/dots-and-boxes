@@ -1,7 +1,7 @@
 import java.awt.Point;
 import java.util.ArrayList;
 
-public class Board {
+public class Board implements Cloneable {
 
     final static int RED = 0;
     final static int BLUE = 1;
@@ -24,6 +24,27 @@ public class Board {
         redScore = blueScore = 0;
     }
 
+    public Board clone() {
+        Board cloned = new Board(n);
+
+        for(int i=0; i<(n-1); i++)
+            for(int j=0; j<n; j++)
+                cloned.hEdge[i][j] = hEdge[i][j];
+
+        for(int i=0; i<n; i++)
+            for(int j=0; j<(n-1); j++)
+                cloned.vEdge[i][j] = vEdge[i][j];
+
+        for(int i=0; i<(n-1); i++)
+            for(int j=0; j<(n-1); j++)
+                cloned.box[i][j] = box[i][j];
+
+        cloned.redScore = redScore;
+        cloned.blueScore = blueScore;
+
+        return cloned;
+    }
+
     private void fill(int[][] array, int val) {
         for(int i=0; i<array.length; i++)
             for(int j=0; j<array[i].length; j++)
@@ -40,6 +61,11 @@ public class Board {
         return blueScore;
     }
 
+    public int getScore(int color) {
+        if(color == RED) return redScore;
+        else return blueScore;
+    }
+
     public int getHEdge(int x, int y) {
         return hEdge[x][y];
     }
@@ -50,6 +76,13 @@ public class Board {
 
     public int getBox(int x, int y) {
         return box[x][y];
+    }
+
+    public static int toggleColor(int color) {
+        if(color == RED)
+            return BLUE;
+        else
+            return RED;
     }
 
     public ArrayList<Edge> getAvailableMoves() {
@@ -112,16 +145,31 @@ public class Board {
     }
 
     public Board getNewBoard(Edge edge, int color) {
-        Board ret = null;
-        try {
-            ret = (Board) this.clone();
-        } catch (CloneNotSupportedException e) {
-            e.printStackTrace();
-        }
+        Board ret = clone();
         if(edge.isHorizontal())
             ret.setHEdge(edge.getX(), edge.getY(), color);
         else
             ret.setVEdge(edge.getX(), edge.getY(), color);
         return ret;
     }
+
+    private int getEdgeCount(int i, int j) {
+        int count = 0;
+        if(hEdge[i][j] == BLACK) count++;
+        if(hEdge[i][j+1] == BLACK) count++;
+        if(vEdge[i][j] == BLACK) count++;
+        if(vEdge[i+1][j] == BLACK) count++;
+        return count;
+    }
+
+    public int getBoxCount(int nSides) {
+        int count = 0;
+        for(int i=0; i<(n-1); i++)
+            for(int j=0; j<(n-1); j++) {
+                if(getEdgeCount(i, j) == nSides)
+                    count++;
+            }
+        return count;
+    }
+
 }

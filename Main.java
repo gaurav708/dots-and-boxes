@@ -42,6 +42,12 @@ public class Main {
 
     private boolean startGame;
 
+    private GameSolver getSolver(int level) {
+        if(level == 1) return new RandomSolver();
+        else if(level == 2) return new GreedySolver();
+        else return null;
+    }
+
     private ActionListener submitListener = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
@@ -55,8 +61,8 @@ public class Main {
                 modeError.setText("");
                 redName = players[rIndex];
                 blueName = players[bIndex];
-                if(rIndex > 1) redSolver = new RandomSolver();
-                if(bIndex > 1) blueSolver = new RandomSolver();
+                if(rIndex > 1) redSolver = getSolver(rIndex - 1);
+                if(bIndex > 1) blueSolver = getSolver(bIndex - 1);
             }
             for(int i=0; i<8; i++) {
                 if(sizeButton[i].isSelected()) {
