@@ -7,9 +7,9 @@ public class GreedySolver extends GameSolver {
         
         ArrayList<Edge> moves = board.getAvailableMoves();
         int moveCount;
-        int value[moveCount];
+        int value[] = new int[moveCount];
         
-        Board tempBoard = new Board;
+        Board tempBoard = new Board();
         tempBoard = board;
 
         for(int i=0;i<moveCount;i++){
