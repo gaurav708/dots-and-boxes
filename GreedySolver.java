@@ -5,14 +5,15 @@ public class GreedySolver extends GameSolver {
     @Override
     public Edge getNextMove(final Board board, int color) {
         
+        Edge trialEdge,nextEdge;
         ArrayList<Edge> moves = board.getAvailableMoves();
         int moveCount;
         int value[] = new int[moveCount];
         
-        Board tempBoard;// = new Board(n);
+        Board tempBoard;
         tempBoard = board;
 
-        for(int i=0;i<moveCount;i++){
+        for(int i=0;i<moveCount;i++){ 
         	value[i] = heuristic(tempBoard.getNewBoard(moves[i],color),color);
         }
 
@@ -21,8 +22,9 @@ public class GreedySolver extends GameSolver {
         	if(value[i]>value[maxValueIndex])
         		maxValueIndex=i;
         }
+        nextEdge = moves[maxValueIndex];
 
-        return moves[maxValueIndex];
+        return nextEdge;
        
     }
 
