@@ -3,13 +3,13 @@ import java.util.ArrayList;
 public class GreedySolver extends GameSolver {
 
     @Override
-    public Edge getNextMove(final Board board, int color, int n) {
+    public Edge getNextMove(final Board board, int color) {
         
         ArrayList<Edge> moves = board.getAvailableMoves();
         int moveCount;
         int value[] = new int[moveCount];
         
-        Board tempBoard = new Board(n);
+        Board tempBoard;// = new Board(n);
         tempBoard = board;
 
         for(int i=0;i<moveCount;i++){

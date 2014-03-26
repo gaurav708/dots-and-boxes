@@ -7,5 +7,5 @@ public abstract class GameSolver {
         	return (board.getBlueScore() - board.getRedScore());
     }
 
-    public abstract Edge getNextMove(final Board board, int color ,int n);  //n is the size for board
+    public abstract Edge getNextMove(final Board board, int color );
 }
