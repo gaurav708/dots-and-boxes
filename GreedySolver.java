@@ -6,7 +6,7 @@ public class GreedySolver extends GameSolver {
     public Edge getNextMove(final Board board, int color) {
         
         ArrayList<Edge> moves = board.getAvailableMoves();
-        int moveCount
+        int moveCount;
         int value[moveCount];
         
         Board tempBoard = new Board;
