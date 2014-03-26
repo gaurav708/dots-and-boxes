@@ -1,5 +1,5 @@
 public abstract class GameSolver {
-	
+
     protected int heuristic(final Board board, int color) {
         if(color)
         	return (board.getRedScore - board.getBlueScore);
