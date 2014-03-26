@@ -3,17 +3,17 @@ import java.util.ArrayList;
 public class GreedySolver extends GameSolver {
 
     @Override
-    public Edge getNextMove(final Board board, int color) {
+    public Edge getNextMove(final Board board, int color, int n) {
         
         ArrayList<Edge> moves = board.getAvailableMoves();
         int moveCount;
         int value[] = new int[moveCount];
         
-        Board tempBoard = new Board();
+        Board tempBoard = new Board(n);
         tempBoard = board;
 
         for(int i=0;i<moveCount;i++){
-        	value[i] = heuristic(tempboard.getNewBoard(moves[i],color),color);
+        	value[i] = heuristic(tempBoard.getNewBoard(moves[i],color),color);
         }
 
         int maxValueIndex=0;
