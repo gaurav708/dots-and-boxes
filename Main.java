@@ -45,6 +45,7 @@ public class Main {
     private GameSolver getSolver(int level) {
         if(level == 1) return new RandomSolver();
         else if(level == 2) return new GreedySolver();
+        else if(level == 3) return new MinimaxSolver();
         else return null;
     }
 
