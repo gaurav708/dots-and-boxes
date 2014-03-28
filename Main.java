@@ -12,7 +12,7 @@ public class Main {
     private JFrame frame;
     private JLabel modeError, sizeError;
 
-    String[] players = {"Select player", "Human", "Computer (Level-1)", "Computer (Level-2)", "Computer (Level-3)", "Computer (Level-4)"};
+    String[] players = {"Select player", "Human", "Computer (Level-1)", "Computer (Level-2)", "Computer (Level-3)", "Computer (Level-4)","Computer (Level-5)"};
     private JRadioButton[] sizeButton;
 
     JComboBox<String> redList, blueList;
@@ -47,6 +47,7 @@ public class Main {
         else if(level == 2) return new GreedySolver();
         else if(level == 3) return new MinimaxSolver();
         else if(level == 4) return new AlphaBetaSolver();
+        else if(level == 5) return new MCSolver();
         else return null;
     }
 
