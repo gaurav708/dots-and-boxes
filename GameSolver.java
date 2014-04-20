@@ -1,17 +1,20 @@
 public abstract class GameSolver {
 
     protected int referenceColor;
+    private final static int cScore = 20;
+    private final static int cThree = 15;
+    private final static int cTwo = 1;
 
     protected int heuristic(final Board board, int color) {
         int value;
         if(referenceColor == Board.RED)
-            value = 8 * board.getRedScore() - 8 * board.getBlueScore();
+            value = cScore * board.getRedScore() - cScore * board.getBlueScore();
         else
-            value = 8 * board.getBlueScore() - 8 * board.getRedScore();
+            value = cScore * board.getBlueScore() - cScore * board.getRedScore();
         if(referenceColor == color)
-            value += 3 * board.getBoxCount(3); //- 2 * board.getBoxCount(2);
+            value += cThree * board.getBoxCount(3) - cTwo * board.getBoxCount(2);
         else
-            value -= 3 * board.getBoxCount(3); //- 2 * board.getBoxCount(2);
+            value -= cThree * board.getBoxCount(3) - cTwo * board.getBoxCount(2);
         return value;
     }
 

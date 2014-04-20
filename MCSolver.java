@@ -1,76 +1,92 @@
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Random;
-import java.lang.Math;
-
 
 public class MCSolver extends GameSolver{
+    final Random r = new Random(System.nanoTime());
+    //private int size ;
 
-	@Override
-	public Edge getNextMove(final Board board, int color)
-	{
-		ArrayList<Edge> moves = board.getAvailableMoves();
-		int moveCount = moves.size();
-		int blueWins[] = new int[moveCount], redWins[] = new int[moveCount], draw[] = new int[moveCount];
-		int j;
-		int winner,winRed,winBlue,drawResult;
-		int value[] = new int[moveCount];
-		int currentSimulation;
-			
-		for(int i=0 ; i<moveCount ; i++){
-			
-			//currentSimulation = new Random().nextInt(moveCount);
-			Board simulatedBoard = board.getNewBoard(moves.get(i), color);
-			j=0;winBlue=0;winRed=0;drawResult=0;
-			while(j<1000){
-				winner = simulateFromState(simulatedBoard, (simulatedBoard.getScore(color) > board.getScore(color) ? color : Board.toggleColor(color)));
-				if(winner == Board.RED)
-					winRed++;
-				else if(winner == Board.BLUE)
-					winBlue++;
-				else if(winner == Board.BLANK)
-					drawResult++;
-				else
-					System.out.println("Error in Simulation");
-				j++;
-			}
+    @Override
+    public Edge getNextMove(Board board, int color) {
+        MCTreeNode.nodeCount = 0;
+        MCTreeNode.simCount = 0;
+        referenceColor = color;
+        //size = board.getSize() ;
+        MCTreeNode root = new MCTreeNode(board, color, null, 0) ;
+        long oldTime = System.nanoTime() ;
+        while(System.nanoTime()-oldTime<1900000000){
+            selectAction(root);
+        }
+        System.out.println(MCTreeNode.nodeCount +" "+ MCTreeNode.simCount) ;
+        return root.getMove();
+    }
 
-				blueWins[i] = winBlue;
-				redWins[i] = winRed;
-				draw[i] = drawResult;
-		}
-		
-		if(color == Board.BLUE)
-			for(int i=0;i<moveCount;i++)
-				value[i] = blueWins[i];		// /1000 + (int) sqrt( log( (double)(1000*moveCount) )/500.0 );   		//second factor same for both cases, since no of simulations taken is same
+    public void selectAction(MCTreeNode root) {
+        List<MCTreeNode> visited = new LinkedList<MCTreeNode>();
+        MCTreeNode cur = root;
+        visited.add(root);
+        while (true) {
+            MCTreeNode child = select(cur);
+            if(child==null) break;
+            cur=child;
+            visited.add(cur);
+        }
+        cur.expand();
+        MCTreeNode newNode = select(cur);
+        if(newNode==null)
+            newNode = cur ;
+        visited.add(newNode);
+        int value = simulateFromState(newNode.getBoard(), newNode.getTurn());
+        /*int value;
+        if(winner == referenceColor) value = 1;
+        else value = 0;*/
+        for (MCTreeNode node : visited) {
+            node.updateStats(value);
+        }
+    }
 
-		else
-			for(int i=0;i<moveCount;i++)
-				value[i] = redWins[i];			
+    private int simulateFromState(Board board, int turn)
+    {
+        int winner;
+        if(board.isComplete()) {
+            MCTreeNode.simCount++;
+            return (board.getScore(referenceColor)-board.getScore(Board.toggleColor(referenceColor)));
+        }
+        else{
+            Edge move = (new GreedySolver().getNextMove(board, turn));
+            Board nextBoard = board.getNewBoard(move, turn) ;
+            winner = simulateFromState(nextBoard, (nextBoard.getScore(turn) > board.getScore(turn) ? turn : Board.toggleColor(turn)));
+            return winner;
+        }
+    }
 
-		int indexMCSelection=0;
-		for(int i=0;i< moveCount;i++)
-			if(value[i]>value[indexMCSelection])
-				indexMCSelection=i;
+    private MCTreeNode select(MCTreeNode cur) {
+        ArrayList<MCTreeNode> children = cur.getChildren();
+        if(children==null)
+            return null ;
+        MCTreeNode selected = null;
+        double bestValue = Double.NEGATIVE_INFINITY;
 
-		return moves.get(indexMCSelection);
-	}
+        if(cur.getVisits()>5)
+            for (MCTreeNode c : children) {
+                double uctValue = /* size*c.getVisits()* */   c.getValue(cur.getVisits());   //+ heuristic(c.getBoard(), c.getTurn())    ;
+                if (uctValue > bestValue) {
+                    selected = c;
+                    bestValue = uctValue;
+                }
+            }
+        else
+            for(MCTreeNode c:children) {
+                double currentValue = heuristic(c.getBoard(),c.getTurn()) ;
+                if(currentValue>bestValue) {
+                    bestValue = currentValue;
+                    selected = c;
+                }
+            }
 
-	private int simulateFromState(Board board, int color)
-	{
-		int winner;
-		//int selection=0,boardSize=board.getSize();
-		if(board.isComplete())
-			return board.getWinner();
-		else{
-			ArrayList<Edge> moves = board.getAvailableMoves();
-			int nextSimulation = new Random(System.nanoTime()).nextInt(moves.size());
-			Board nextBoard = board.getNewBoard(moves.get(nextSimulation), color);
-			winner = simulateFromState(nextBoard, (nextBoard.getScore(color) > board.getScore(color) ? color : Board.toggleColor(color)));
-			return winner;
-			}
-	}
-
-
+        return selected;
+    }
 }
 
 

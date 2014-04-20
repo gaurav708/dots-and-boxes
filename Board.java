@@ -66,18 +66,6 @@ public class Board implements Cloneable {
         else return blueScore;
     }
 
-    public int getHEdge(int x, int y) {
-        return hEdge[x][y];
-    }
-
-    public int getVEdge(int x, int y) {
-        return vEdge[x][y];
-    }
-
-    public int getBox(int x, int y) {
-        return box[x][y];
-    }
-
     public static int toggleColor(int color) {
         if(color == RED)
             return BLUE;

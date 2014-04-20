@@ -12,7 +12,7 @@ public class Main {
     private JFrame frame;
     private JLabel modeError, sizeError;
 
-    String[] players = {"Select player", "Human", "Computer (Level-1)", "Computer (Level-2)", "Computer (Level-3)", "Computer (Level-4)","Computer (Level-5)"};
+    String[] players = {"Select player", "Human", "Random Player", "Greedy Player", "Minimax Search", "Alpha-Beta Pruning","Monte Carlo Search"};
     private JRadioButton[] sizeButton;
 
     JComboBox<String> redList, blueList;
@@ -88,7 +88,7 @@ public class Main {
 
         constraints.gridx = 0;
         constraints.gridy = 0;
-        JLabel titleLabel = new JLabel(new ImageIcon("title.png"));
+        JLabel titleLabel = new JLabel(new ImageIcon(getClass().getResource("title.png")));
         grid.add(titleLabel, constraints);
 
         ++constraints.gridy;

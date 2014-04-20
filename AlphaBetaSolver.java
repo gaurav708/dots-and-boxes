@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 
 public class AlphaBetaSolver extends GameSolver{
     final static int MIN=-1000000000, MAX=1000000000 ;
@@ -32,6 +33,7 @@ public class AlphaBetaSolver extends GameSolver{
             if (size == 0)
                 return new Pair(null, heuristic(board, color));
 
+            Collections.shuffle(moves);
             Pair[] neighbours = new Pair[size] ;
             for(int i=0 ; i<size ; i++) {
                 Board newBoard = board.getNewBoard(moves.get(i), color);
